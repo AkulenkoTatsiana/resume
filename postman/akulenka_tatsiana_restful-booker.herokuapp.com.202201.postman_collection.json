@@ -74,7 +74,7 @@
 			"response": []
 		},
 		{
-			"name": "GetIDs",
+			"name": "IDisExist",
 			"event": [
 				{
 					"listen": "test",
@@ -255,6 +255,44 @@
 					}
 				],
 				"url": "{{basicURL}}/booking/{{myID}}"
+			},
+			"response": []
+		},
+		{
+			"name": "IDisDeleted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var id = pm.environment.get(\"myID\");\r",
+							"\r",
+							"var allid = pm.response.json();\r",
+							"var IDis = false;\r",
+							"\r",
+							"allid.forEach(el => {\r",
+							"    if (el.bookingid === id){\r",
+							"        IDis = true;\r",
+							"    }\r",
+							"})\r",
+							"\r",
+							"\r",
+							"pm.test(\"ID isn't exist\", function(){\r",
+							"    pm.expect(IDis).to.eql(false);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{basicURL}}/booking"
 			},
 			"response": []
 		}
